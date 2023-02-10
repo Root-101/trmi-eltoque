@@ -1,5 +1,6 @@
 package dev.root101.trmi_eltoque;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.root101.trmi_eltoque.model.Domain;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,26 @@ public class Controller {
             summary = "Consulta la tasa actual.",
             description = "Decuelve la tasa actual."
     )
-    public Domain trmi() {
-        return useCase.getTrmi();
+    public Response trmi() {
+        return Response.build(
+                useCase.getTrmi()
+        );
+    }
+
+    public record Response(
+            @JsonProperty("usd")
+            String usd,
+            @JsonProperty("eur")
+            String eur,
+            @JsonProperty("mlc")
+            String mlc) {
+
+        public static Response build(Domain domain) {
+            return new Response(
+                    domain.getUSD().toString(),
+                    domain.getEUR().toString(),
+                    domain.getMLC().toString()
+            );
+        }
     }
 }
