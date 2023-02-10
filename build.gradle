@@ -7,7 +7,7 @@ plugins {
 
 group = 'dev.root101'
 
-version = '0.0.1.SNAPSHOT.20230207'
+version = '0.0.2.SNAPSHOT.20230210'
 
 sourceCompatibility = '17'
 
