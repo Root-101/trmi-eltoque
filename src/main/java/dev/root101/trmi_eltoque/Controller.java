@@ -40,9 +40,9 @@ public class Controller {
 
         public static Response build(Domain domain) {
             return new Response(
-                    domain.getUSD().toString(),
-                    domain.getEUR().toString(),
-                    domain.getMLC().toString()
+                    domain.getUSD() == null ? null : domain.getUSD().toString(),
+                    domain.getEUR() == null ? null : domain.getEUR().toString(),
+                    domain.getMLC() == null ? null : domain.getMLC().toString()
             );
         }
     }
