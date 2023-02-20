@@ -12,7 +12,7 @@ public class Schedule {
     @Autowired
     private UseCase useCase;
 
-    @Scheduled(fixedDelay = 1, initialDelay = 0, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 10, initialDelay = 0, timeUnit = TimeUnit.MINUTES)
     public void mailToInactiveUsers() {
         try {
             System.out.println("Actualizando valores a las %s".formatted(Instant.now()));

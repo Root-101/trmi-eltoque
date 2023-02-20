@@ -55,19 +55,23 @@ public class Client {
         HttpEntity entity = new HttpEntity(headers);
 
         Instant now = Instant.now();
+
+        String from = DATE_FORMATTER.format(
+                now.minus(
+                        minutesBefore,
+                        ChronoUnit.MINUTES
+                )
+        );
+        String to = DATE_FORMATTER.format(now);
+        System.out.println("from: %s  -  to: %s".formatted(from, to));
         return restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 entity,
                 ElToque_Response.class,
                 Map.of(
-                        hedaer_dateFrom, DATE_FORMATTER.format(
-                                now.minus(
-                                        minutesBefore,
-                                        ChronoUnit.MINUTES
-                                )
-                        ),
-                        hedaer_dateTo, DATE_FORMATTER.format(now)
+                        hedaer_dateFrom, from,
+                        hedaer_dateTo, to
                 )
         );
     }
