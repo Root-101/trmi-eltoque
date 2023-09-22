@@ -1,4 +1,4 @@
-package dev.root101.trmi_eltoque;
+package dev.root101.trmi_eltoque.feature;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.root101.trmi_eltoque.model.Domain;

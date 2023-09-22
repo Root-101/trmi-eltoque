@@ -1,4 +1,4 @@
-package dev.root101.trmi_eltoque;
+package dev.root101.trmi_eltoque.feature;
 
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;

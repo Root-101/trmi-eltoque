@@ -1,4 +1,4 @@
-package dev.root101.trmi_eltoque;
+package dev.root101.trmi_eltoque.feature;
 
 import dev.root101.trmi_eltoque.model.Domain;
 import dev.root101.trmi_eltoque.model.ElToque_Response;

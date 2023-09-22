@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package dev.root101.trmi_eltoque;
+package dev.root101.trmi_eltoque.feature;
 
 import dev.root101.trmi_eltoque.model.*;
 import java.time.Instant;
@@ -11,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,14 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * Para consumir la api de 'el toque'.
  *
  * @author Yo
  */
 @Service
 public class Client {
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss")
-            .withZone(ZoneId.of("GMT-0"));
 
     @Value("${trmi.eltoque.auth_token}")
     private String elToqueToken;
@@ -39,6 +34,9 @@ public class Client {
 
     @Value("${trmi.eltoque.url.header.date_to}")
     private String hedaer_dateTo;
+
+    @Autowired
+    DateTimeFormatter DATE_FORMATTER;
 
     @Autowired
     private RestTemplate restTemplate;
