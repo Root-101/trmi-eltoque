@@ -18,45 +18,16 @@ public class UseCase {
     @Autowired
     private Client client;
 
-    private final Domain currentValues = new Domain(
-            null,
-            null,
-            null/*,
-            Instant.now()*/
-    );
-
-    public Domain getTrmi() {
-        return currentValues;
-    }
-
     public Domain updateTrmi() {
         try {
-            ResponseEntity<ElToque_Response> response = client.trmi();
+            ResponseEntity<ElToque_Response> response = client.trmi(
+                    Instant.parse("2023-09-22T10:01:00.00Z"),
+                    Instant.parse("2023-09-22T11:00:00.00Z")
+            );
             Domain convert = convert(response.getBody());
 
-            //update USD
-            if (convert.getUSD() != null) {
-                currentValues.setUSD(convert.getUSD());
-            } else {
-                System.out.println("USD NULL");
-            }
-
-            //update EUR
-            if (convert.getEUR() != null) {
-                currentValues.setEUR(convert.getEUR());
-            } else {
-                System.out.println("EUR NULL");
-            }
-
-            //update MLC
-            if (convert.getMLC() != null) {
-                currentValues.setMLC(convert.getMLC());
-            } else {
-                System.out.println("MLC NULL");
-            }
-
-            //currentValues.setLastUpdatedAt(convert.getLastUpdatedAt());
-            System.out.println("Valores actualizados OK OK." + currentValues);
+            System.out.println("Valores actualizados OK." + convert);
+            return convert;
         } catch (Exception e) {
             System.out.println("---------------------------------------------------------------");
             System.out.println("Error actualizando los valores.");
@@ -64,7 +35,7 @@ public class UseCase {
             System.out.println(e.getMessage());
         }
 
-        return currentValues;
+        return null;
     }
 
     private Domain convert(ElToque_Response response) {
@@ -80,6 +51,6 @@ public class UseCase {
                 ? new BigDecimal(response.getTasas().get(MLC_KEY))
                 : null;
 
-        return new Domain(USD, EUR, MLC/*, Instant.now()*/);
+        return new Domain(USD, EUR, MLC);
     }
 }

@@ -8,8 +8,6 @@ import dev.root101.trmi_eltoque.model.*;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,13 +26,10 @@ import org.springframework.web.client.RestTemplate;
 public class Client {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss")
-            .withZone(ZoneId.of("GMT-5"));
+            .withZone(ZoneId.of("GMT-0"));
 
     @Value("${trmi.eltoque.auth_token}")
     private String elToqueToken;
-
-    @Value("${trmi.eltoque.minutes_before}")
-    private int minutesBefore;
 
     @Value("${trmi.eltoque.url}")
     private String url;
@@ -48,21 +43,15 @@ public class Client {
     @Autowired
     private RestTemplate restTemplate;
 
-    public ResponseEntity<ElToque_Response> trmi() {
+    public ResponseEntity<ElToque_Response> trmi(Instant fromInstant, Instant toInstant) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(elToqueToken);
 
         HttpEntity entity = new HttpEntity(headers);
 
-        Instant now = Instant.now();
+        String from = DATE_FORMATTER.format(fromInstant);
+        String to = DATE_FORMATTER.format(toInstant);
 
-        String from = DATE_FORMATTER.format(
-                now.minus(
-                        minutesBefore,
-                        ChronoUnit.MINUTES
-                )
-        );
-        String to = DATE_FORMATTER.format(now);
         System.out.println("from: %s  -  to: %s".formatted(from, to));
         return restTemplate.exchange(
                 url,

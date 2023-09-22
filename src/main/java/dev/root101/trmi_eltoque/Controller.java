@@ -19,6 +19,7 @@ public class Controller {
     @Autowired
     private UseCase useCase;
 
+    
     @GetMapping("/current")
     @Operation(
             summary = "Consulta la tasa actual.",
@@ -26,7 +27,7 @@ public class Controller {
     )
     public Response trmi() {
         return Response.build(
-                useCase.getTrmi()
+                useCase.updateTrmi()
         );
     }
 

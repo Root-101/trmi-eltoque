@@ -13,7 +13,9 @@ public class ElToque_Response {
     private String date;
 
     private int hour;
+    
     private int minutes;
+    
     private int seconds;
 
 }
