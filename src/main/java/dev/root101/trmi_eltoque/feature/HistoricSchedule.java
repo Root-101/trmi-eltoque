@@ -27,7 +27,7 @@ public class HistoricSchedule {
     private TrmiEntity latest = null;
     private final String start = "2020-12-31 19:00:00";
 
-    //@Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void updateRegistery() {
         try {
             //si no tengo ninguno de ultimo, lo busco en la tabla
