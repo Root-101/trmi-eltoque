@@ -134,9 +134,9 @@ class ElToqueClientImpl implements ElToqueClient {
                         DATE_FORMATTER.parse(
                                 "%s %s:%s:%s".formatted(
                                         response.getDate(),
-                                        response.getHour(),
-                                        response.getMinutes(),
-                                        response.getSeconds()
+                                        String.format("%02d", response.getHour()),//agrega ceros a la izquierda en caso...
+                                        String.format("%02d", response.getMinutes()),
+                                        String.format("%02d", response.getSeconds())
                                 )
                         )
                 )
