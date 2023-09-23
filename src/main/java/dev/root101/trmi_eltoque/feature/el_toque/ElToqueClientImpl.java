@@ -2,6 +2,7 @@ package dev.root101.trmi_eltoque.feature.el_toque;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +68,12 @@ class ElToqueClientImpl implements ElToqueClient {
      * Hace la peticion de obtener la Tasa Representativa del Mercado Informal
      * en un rango de tiempo determinado.
      *
-     * @param fromInstant
-     * @param toInstant
+     * @param fromTime
+     * @param toTime
      * @return
      */
     @Override
-    public ElToqueDomain trmi(Instant fromInstant, Instant toInstant) {
+    public ElToqueDomain trmi(ZonedDateTime fromTime, ZonedDateTime toTime) {
         //inicializa los headers y la autenticacion
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(elToqueToken);
@@ -81,8 +82,8 @@ class ElToqueClientImpl implements ElToqueClient {
         HttpEntity entity = new HttpEntity(headers);
 
         //formateo las fechas de Instant a String
-        String from = DATE_FORMATTER.format(fromInstant);
-        String to = DATE_FORMATTER.format(toInstant);
+        String from = DATE_FORMATTER.format(fromTime);
+        String to = DATE_FORMATTER.format(toTime);
 
         System.out.println("ElToque: consultando de %s - %s".formatted(from, to));
 
@@ -99,7 +100,7 @@ class ElToqueClientImpl implements ElToqueClient {
         );
 
         //Convierto la data cruda en un objeto responsable
-        return convert(response.getBody(), fromInstant, toInstant);
+        return convert(response.getBody(), fromTime, toTime);
     }
 
     /**
@@ -111,7 +112,7 @@ class ElToqueClientImpl implements ElToqueClient {
      * @param to
      * @return
      */
-    private ElToqueDomain convert(ElToqueResponse response, Instant from, Instant to) {
+    private ElToqueDomain convert(ElToqueResponse response, ZonedDateTime from, ZonedDateTime to) {
         BigDecimal USD = response.getTasas().containsKey(USD_KEY)
                 ? new BigDecimal(response.getTasas().get(USD_KEY))
                 : null;
@@ -130,7 +131,7 @@ class ElToqueClientImpl implements ElToqueClient {
                 MLC,
                 from,
                 to,
-                Instant.from(
+                ZonedDateTime.from(
                         DATE_FORMATTER.parse(
                                 "%s %s:%s:%s".formatted(
                                         response.getDate(),

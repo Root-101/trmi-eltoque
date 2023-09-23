@@ -1,7 +1,7 @@
 package dev.root101.trmi_eltoque.feature.el_toque;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import lombok.*;
 
 /**
@@ -23,7 +23,7 @@ public class ElToqueDomain {
 
     private BigDecimal MLC;
 
-    private Instant from;
-    private Instant to;
-    private Instant requestedAt;
+    private ZonedDateTime from;
+    private ZonedDateTime to;
+    private ZonedDateTime requestedAt;
 }

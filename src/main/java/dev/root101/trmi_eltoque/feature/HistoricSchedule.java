@@ -5,6 +5,7 @@ import dev.root101.trmi_eltoque.feature.data.TrmiRepo;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
@@ -31,11 +32,11 @@ public class HistoricSchedule {
         try {
             TrmiEntity latest = repo.findFirstByOrderByRegisterDateDesc();
 
-            Instant from;
+            ZonedDateTime from;
 
             //si no lo encontre en la tabla es porque esta vacio, pongo el inicial inicial
             if (latest == null) {
-                from = Instant.from(DATE_FORMATTER.parse(start));
+                from = ZonedDateTime.from(DATE_FORMATTER.parse(start));
             } else {
                 //si esta en la tabla cojo el inicial por este, y el from es 24h antes
                 from = latest.getRegisterDate().minus(24, ChronoUnit.HOURS);
@@ -45,7 +46,7 @@ public class HistoricSchedule {
             }
 
             //creo el 'to' como 24h despues
-            Instant to = from.plus(24, ChronoUnit.HOURS);
+            ZonedDateTime to = from.plus(24, ChronoUnit.HOURS);
             //ajusto el from a +1 seg para que este dentro del rango de las 24h
             from = from.plusSeconds(1);
 
@@ -62,7 +63,7 @@ public class HistoricSchedule {
                             response.getUSD(),
                             response.getMLC(),
                             to,
-                            Instant.now()
+                            ZonedDateTime.now()
                     )
             );
 

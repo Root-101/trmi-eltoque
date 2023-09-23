@@ -3,11 +3,10 @@ package dev.root101.trmi_eltoque.feature.logic;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -53,13 +52,13 @@ class CurrentUseCaseImpl implements CurrentUseCase {
      */
     public ElToqueDomain update() {
         try {
-            Instant to = Instant.now();
+            ZonedDateTime to = ZonedDateTime.now();
 
             //ni idea porque, pero hay que hacerlo para que lo ajuste bien
             to = to.plus(1, ChronoUnit.HOURS);
-            
+
             //cuanto tiempo antes es que va a actualizar
-            Instant from = to.minus(24, ChronoUnit.HOURS);
+            ZonedDateTime from = to.minus(24, ChronoUnit.HOURS);
 
             //ajusto el from a +1 seg para que este dentro del rango de las 24h
             from = from.plusSeconds(1);

@@ -32,8 +32,8 @@ CREATE TABLE public.trmi (
     eur numeric(6,3),
     usd numeric(6,3),
     mlc numeric(6,3),
-    register_date timestamp without time zone NOT NULL,
-    created_at timestamp without time zone NOT NULL
+    register_date timestamp with time zone NOT NULL,
+    created_at timestamp with time zone NOT NULL
 );
 
 

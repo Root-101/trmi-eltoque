@@ -2,9 +2,9 @@ package dev.root101.trmi_eltoque.feature.data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.time.ZonedDateTime;
 
 import lombok.*;
 
@@ -45,10 +45,10 @@ public class TrmiEntity implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "register_date", nullable = false)
-    private Instant registerDate;
+    private ZonedDateTime registerDate;
 
     @Basic(optional = false)
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    private ZonedDateTime createdAt;
 
 }
