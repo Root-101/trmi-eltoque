@@ -84,6 +84,8 @@ class ElToqueClientImpl implements ElToqueClient {
         String from = DATE_FORMATTER.format(fromInstant);
         String to = DATE_FORMATTER.format(toInstant);
 
+        System.out.println("ElToque: consultando de %s - %s".formatted(from, to));
+
         //Hago la peticion y capturo la data cruda
         ResponseEntity<ElToqueResponse> response = restTemplate.exchange(
                 url,
