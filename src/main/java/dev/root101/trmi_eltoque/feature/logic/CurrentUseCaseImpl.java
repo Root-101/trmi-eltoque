@@ -38,7 +38,7 @@ class CurrentUseCaseImpl implements CurrentUseCase {
      * De ahi en adelante se actualiza cada X tiempo.
      */
     //docs del crono: https://reflectoring.io/spring-scheduler/
-    @Scheduled(initialDelay = 0, fixedDelay = 720, timeUnit = TimeUnit.MINUTES)//720 min = 12h
+    //@Scheduled(initialDelay = 0, fixedDelay = 720, timeUnit = TimeUnit.MINUTES)//720 min = 12h
     public void onSchedule() {
         System.out.println("onSchedule %s".formatted(Instant.now()));
         update();
