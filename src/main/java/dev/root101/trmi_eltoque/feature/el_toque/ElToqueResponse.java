@@ -25,6 +25,8 @@ import lombok.*;
  * }
  * </pre>
  *
+ * De tipo 'protected' porque es un objeto interno.
+ *
  * @author Yo
  */
 @Data
