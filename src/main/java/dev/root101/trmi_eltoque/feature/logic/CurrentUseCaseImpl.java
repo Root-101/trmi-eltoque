@@ -3,6 +3,7 @@ package dev.root101.trmi_eltoque.feature.logic;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ class CurrentUseCaseImpl implements CurrentUseCase {
     private ElToqueClient elToque;
 
     private ElToqueDomain current;
+
+    @Autowired
+    private DateTimeFormatter DATE_FORMATTER;
 
     @Override
     public ElToqueDomain current() {
@@ -51,15 +55,16 @@ class CurrentUseCaseImpl implements CurrentUseCase {
         try {
             Instant to = Instant.now();
 
-            //ni idea porque, pero hay que hacerlo para que lo ajuste
-            //to.plus(1, ChronoUnit.HOURS);
+            //ni idea porque, pero hay que hacerlo para que lo ajuste bien
+            to = to.plus(1, ChronoUnit.HOURS);
+            
             //cuanto tiempo antes es que va a actualizar
             Instant from = to.minus(24, ChronoUnit.HOURS);
 
             //ajusto el from a +1 seg para que este dentro del rango de las 24h
             from = from.plusSeconds(1);
 
-            System.out.println("Actualizando actual: fecha %s a %s".formatted(from, to));
+            System.out.println("Actualizando actual: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
 
             ElToqueDomain updated = elToque.trmi(from, to);
 

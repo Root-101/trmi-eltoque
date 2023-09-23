@@ -25,9 +25,9 @@ public class HistoricSchedule {
     private DateTimeFormatter DATE_FORMATTER;
 
     private TrmiEntity latest = null;
-    private final String start = "2020-12-31 19:00:00";
+    private final String start = "2021-01-01 00:00:00";
 
-    @Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
+    //@Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void updateRegistery() {
         try {
             //si no tengo ninguno de ultimo, lo busco en la tabla
@@ -53,7 +53,7 @@ public class HistoricSchedule {
             //ajusto el from a +1 seg para que este dentro del rango de las 24h
             from = from.plusSeconds(1);
 
-            System.out.println("Buscando registro: fecha %s a %s".formatted(from, to));
+            System.out.println("Buscando registro: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
 
             ElToqueDomain response = elToque.trmi(from, to);
 
