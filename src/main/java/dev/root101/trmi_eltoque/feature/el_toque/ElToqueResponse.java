@@ -30,7 +30,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ElToqueResponse {
+class ElToqueResponse {
 
     /**
      * Array con las tasas:
