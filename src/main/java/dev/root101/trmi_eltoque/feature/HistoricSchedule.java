@@ -1,12 +1,11 @@
 package dev.root101.trmi_eltoque.feature;
 
+import static dev.root101.trmi_eltoque.App.DATE_FORMATTER;
 import dev.root101.trmi_eltoque.feature.data.TrmiEntity;
 import dev.root101.trmi_eltoque.feature.data.TrmiRepo;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ public class HistoricSchedule {
 
     @Autowired
     private TrmiRepo repo;
-
-    @Autowired
-    private DateTimeFormatter DATE_FORMATTER;
 
     private final String start = "2021-01-01 00:00:00";
 

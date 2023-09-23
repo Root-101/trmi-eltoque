@@ -1,10 +1,10 @@
 package dev.root101.trmi_eltoque.feature.logic;
 
+import static dev.root101.trmi_eltoque.App.DATE_FORMATTER;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,6 @@ class CurrentUseCaseImpl implements CurrentUseCase {
     private ElToqueClient elToque;
 
     private ElToqueDomain current;
-
-    @Autowired
-    private DateTimeFormatter DATE_FORMATTER;
 
     @Override
     public ElToqueDomain current() {

@@ -1,9 +1,8 @@
 package dev.root101.trmi_eltoque.feature.el_toque;
 
+import static dev.root101.trmi_eltoque.App.DATE_FORMATTER;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,12 +50,6 @@ class ElToqueClientImpl implements ElToqueClient {
      */
     @Value("${trmi.eltoque.url.header.date_to}")
     private String header_dateTo;
-
-    /**
-     * Formatter para convertir un Instant al formato de fecha que pide la api.
-     */
-    @Autowired
-    DateTimeFormatter DATE_FORMATTER;
 
     /**
      * Template para hacer las peticiones.
