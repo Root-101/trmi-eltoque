@@ -24,16 +24,12 @@ public class HistoricSchedule {
     @Autowired
     private DateTimeFormatter DATE_FORMATTER;
 
-    private TrmiEntity latest = null;
     private final String start = "2021-01-01 00:00:00";
 
     @Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void updateRegistery() {
         try {
-            //si no tengo ninguno de ultimo, lo busco en la tabla
-            if (latest == null) {
-                latest = repo.findFirstByOrderByRegisterDateDesc();
-            }
+            TrmiEntity latest = repo.findFirstByOrderByRegisterDateDesc();
 
             Instant from;
 
@@ -71,7 +67,6 @@ public class HistoricSchedule {
             );
 
         } catch (Exception e) {
-            latest = null;//si da error quito el latest para que se vaya a buscar a la BD
             System.out.println(e.getMessage());
         }
     }
