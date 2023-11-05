@@ -5,8 +5,10 @@ import dev.root101.trmi_eltoque.feature.data.TrmiEntity;
 import dev.root101.trmi_eltoque.feature.data.TrmiRepo;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,6 +24,12 @@ public class HistoricSchedule {
     private TrmiRepo repo;
 
     private final String start = "2021-01-01 00:00:00";
+
+    private final List<LocalDate> daysWithHourChange = List.of(
+            ZonedDateTime.from(DATE_FORMATTER.parse("2021-11-07 00:00:00")).toLocalDate(),
+            ZonedDateTime.from(DATE_FORMATTER.parse("2022-11-07 00:00:00")).toLocalDate(),
+            ZonedDateTime.from(DATE_FORMATTER.parse("2023-11-05 00:00:00")).toLocalDate()
+    );
 
     @Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
     public void updateRegistery() {
@@ -43,8 +51,15 @@ public class HistoricSchedule {
 
             //creo el 'to' como 24h despues
             ZonedDateTime to = from.plus(24, ChronoUnit.HOURS);
-            //ajusto el from a +1 seg para que este dentro del rango de las 24h
-            from = from.plusSeconds(1);
+
+            if (daysWithHourChange.contains(to.toLocalDate())) {
+                //si es un dia de cambio de horario, para hora normal, agrego una hora porque si no se va del rango de las 24h
+                from = from.plusHours(1);
+                from = from.plusSeconds(1);
+            } else {
+                //ajusto el from a +61 seg (un min y un seg) para que este dentro del rango de las 24h
+                from = from.plusSeconds(1);
+            }
 
             System.out.println("Buscando registro: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
 
