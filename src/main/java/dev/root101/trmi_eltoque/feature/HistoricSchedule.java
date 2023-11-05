@@ -52,14 +52,13 @@ public class HistoricSchedule {
             //creo el 'to' como 24h despues
             ZonedDateTime to = from.plus(24, ChronoUnit.HOURS);
 
-            if (daysWithHourChange.contains(to.toLocalDate())) {
-                //si es un dia de cambio de horario, para hora normal, agrego una hora porque si no se va del rango de las 24h
-                from = from.plusHours(1);
-                from = from.plusSeconds(1);
-            } else {
-                //ajusto el from a +61 seg (un min y un seg) para que este dentro del rango de las 24h
-                from = from.plusSeconds(1);
-            }
+            //if (daysWithHourChange.contains(to.toLocalDate())) {
+            //si es un dia de cambio de horario, para hora normal, agrego una hora porque si no se va del rango de las 24h
+            //from = from.plusHours(1);
+            //}
+            
+            //ajusto el from a +61 seg (un min y un seg) para que este dentro del rango de las 24h
+            from = from.plusSeconds(1);
 
             System.out.println("Buscando registro: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
 
