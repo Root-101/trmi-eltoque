@@ -25,13 +25,7 @@ public class HistoricSchedule {
 
     private final String start = "2021-01-01 00:00:00";
 
-    private final List<LocalDate> daysWithHourChange = List.of(
-            ZonedDateTime.from(DATE_FORMATTER.parse("2021-11-07 00:00:00")).toLocalDate(),
-            ZonedDateTime.from(DATE_FORMATTER.parse("2022-11-07 00:00:00")).toLocalDate(),
-            ZonedDateTime.from(DATE_FORMATTER.parse("2023-11-05 00:00:00")).toLocalDate()
-    );
-
-    @Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
     public void updateRegistery() {
         try {
             TrmiEntity latest = repo.findFirstByOrderByRegisterDateDesc();
@@ -52,12 +46,9 @@ public class HistoricSchedule {
             //creo el 'to' como 24h despues
             ZonedDateTime to = from.plus(24, ChronoUnit.HOURS);
 
-            //if (daysWithHourChange.contains(to.toLocalDate())) {
-            //si es un dia de cambio de horario, para hora normal, agrego una hora porque si no se va del rango de las 24h
+            //los dias de cambio de horario hay que subirle una hora mas
             //from = from.plusHours(1);
-            //}
-            
-            //ajusto el from a +61 seg (un min y un seg) para que este dentro del rango de las 24h
+            //ajusto el from a +1 seg (un min y un seg) para que este dentro del rango de las 24h
             from = from.plusSeconds(1);
 
             System.out.println("Buscando registro: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
