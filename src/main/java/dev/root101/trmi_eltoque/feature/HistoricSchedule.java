@@ -48,10 +48,17 @@ public class HistoricSchedule {
 
             //los dias de cambio de horario hay que subirle una hora mas
             //from = from.plusHours(1);
-            //ajusto el from a +1 seg (un min y un seg) para que este dentro del rango de las 24h
+            //
+            //ajusto el from a +1 seg para que este dentro del rango de las 24h
             from = from.plusSeconds(1);
 
             System.out.println("Buscando registro: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
+
+            ZonedDateTime last24Hours = ZonedDateTime.now().minusHours(24);
+            if (to.isAfter(last24Hours)) {
+                System.out.println("Peticion al to muy cerca de las ultimas 24 horas");
+                return;
+            }
 
             ElToqueDomain response = elToque.trmi(from, to);
 
