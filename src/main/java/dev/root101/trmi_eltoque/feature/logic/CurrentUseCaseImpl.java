@@ -1,14 +1,12 @@
 package dev.root101.trmi_eltoque.feature.logic;
 
+import static dev.root101.trmi_eltoque.App.DATE_FORMATTER;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +34,7 @@ class CurrentUseCaseImpl implements CurrentUseCase {
      * De ahi en adelante se actualiza cada X tiempo.
      */
     //docs del crono: https://reflectoring.io/spring-scheduler/
-    @Scheduled(initialDelay = 0, fixedDelay = 720, timeUnit = TimeUnit.MINUTES)//720 min = 12h
+    //@Scheduled(initialDelay = 0, fixedDelay = 720, timeUnit = TimeUnit.MINUTES)//720 min = 12h
     public void onSchedule() {
         System.out.println("onSchedule %s".formatted(Instant.now()));
         update();
@@ -51,17 +49,18 @@ class CurrentUseCaseImpl implements CurrentUseCase {
      */
     public ElToqueDomain update() {
         try {
-            Instant to = Instant.now();
+            ZonedDateTime to = ZonedDateTime.now();
 
-            //ni idea porque, pero hay que hacerlo para que lo ajuste
-            //to.plus(1, ChronoUnit.HOURS);
+            //ni idea porque, pero hay que hacerlo para que lo ajuste bien
+            to = to.plus(1, ChronoUnit.HOURS);
+
             //cuanto tiempo antes es que va a actualizar
-            Instant from = to.minus(24, ChronoUnit.HOURS);
+            ZonedDateTime from = to.minus(24, ChronoUnit.HOURS);
 
             //ajusto el from a +1 seg para que este dentro del rango de las 24h
             from = from.plusSeconds(1);
 
-            System.out.println("Actualizando actual: fecha %s a %s".formatted(from, to));
+            System.out.println("Actualizando actual: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
 
             ElToqueDomain updated = elToque.trmi(from, to);
 

@@ -1,12 +1,14 @@
 package dev.root101.trmi_eltoque.feature;
 
+import static dev.root101.trmi_eltoque.App.DATE_FORMATTER;
 import dev.root101.trmi_eltoque.feature.data.TrmiEntity;
 import dev.root101.trmi_eltoque.feature.data.TrmiRepo;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueClient;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,25 +23,18 @@ public class HistoricSchedule {
     @Autowired
     private TrmiRepo repo;
 
-    @Autowired
-    private DateTimeFormatter DATE_FORMATTER;
+    private final String start = "2021-01-01 00:00:00";
 
-    private TrmiEntity latest = null;
-    private final String start = "2020-12-31 19:00:00";
-
-    //@Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(initialDelay = 0, fixedDelay = 15, timeUnit = TimeUnit.MINUTES)
     public void updateRegistery() {
         try {
-            //si no tengo ninguno de ultimo, lo busco en la tabla
-            if (latest == null) {
-                latest = repo.findFirstByOrderByRegisterDateDesc();
-            }
+            TrmiEntity latest = repo.findFirstByOrderByRegisterDateDesc();
 
-            Instant from;
+            ZonedDateTime from;
 
             //si no lo encontre en la tabla es porque esta vacio, pongo el inicial inicial
             if (latest == null) {
-                from = Instant.from(DATE_FORMATTER.parse(start));
+                from = ZonedDateTime.from(DATE_FORMATTER.parse(start));
             } else {
                 //si esta en la tabla cojo el inicial por este, y el from es 24h antes
                 from = latest.getRegisterDate().minus(24, ChronoUnit.HOURS);
@@ -49,11 +44,21 @@ public class HistoricSchedule {
             }
 
             //creo el 'to' como 24h despues
-            Instant to = from.plus(24, ChronoUnit.HOURS);
+            ZonedDateTime to = from.plus(24, ChronoUnit.HOURS);
+
+            //los dias de cambio de horario hay que subirle una hora mas
+            //from = from.plusHours(1);
+            //
             //ajusto el from a +1 seg para que este dentro del rango de las 24h
             from = from.plusSeconds(1);
 
-            System.out.println("Buscando registro: fecha %s a %s".formatted(from, to));
+            System.out.println("Buscando registro: fecha %s a %s".formatted(DATE_FORMATTER.format(from), DATE_FORMATTER.format(to)));
+
+            ZonedDateTime last24Hours = ZonedDateTime.now().minusHours(24);
+            if (to.isAfter(last24Hours)) {
+                System.out.println("Peticion al to muy cerca de las ultimas 24 horas");
+                return;
+            }
 
             ElToqueDomain response = elToque.trmi(from, to);
 
@@ -66,12 +71,11 @@ public class HistoricSchedule {
                             response.getUSD(),
                             response.getMLC(),
                             to,
-                            Instant.now()
+                            ZonedDateTime.now()
                     )
             );
 
         } catch (Exception e) {
-            latest = null;//si da error quito el latest para que se vaya a buscar a la BD
             System.out.println(e.getMessage());
         }
     }

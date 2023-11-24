@@ -1,6 +1,6 @@
 package dev.root101.trmi_eltoque.feature.el_toque;
 
-import java.time.Instant;
+import java.time.ZonedDateTime;
 
 /**
  * Interfaz para el trabajo con la api de El Toque
@@ -9,5 +9,5 @@ import java.time.Instant;
  */
 public interface ElToqueClient {
 
-    public ElToqueDomain trmi(Instant fromInstant, Instant toInstant);
+    public ElToqueDomain trmi(ZonedDateTime fromInstant, ZonedDateTime toInstant);
 }
