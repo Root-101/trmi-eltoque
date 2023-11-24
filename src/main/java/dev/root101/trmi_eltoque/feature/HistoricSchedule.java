@@ -25,7 +25,7 @@ public class HistoricSchedule {
 
     private final String start = "2021-01-01 00:00:00";
 
-    @Scheduled(initialDelay = 0, fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(initialDelay = 0, fixedDelay = 15, timeUnit = TimeUnit.MINUTES)
     public void updateRegistery() {
         try {
             TrmiEntity latest = repo.findFirstByOrderByRegisterDateDesc();
