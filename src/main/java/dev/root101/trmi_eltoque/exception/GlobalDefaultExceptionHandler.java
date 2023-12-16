@@ -1,8 +1,8 @@
 package dev.root101.trmi_eltoque.exception;
 
-import dev.root101.clean.core.exceptions.ApiException;
-import dev.root101.clean.core.exceptions.ValidationException;
-import dev.root101.clean.core.rest.ApiResponse;
+import dev.root101.commons.exceptions.ApiException;
+import dev.root101.commons.exceptions.ValidationException;
+import dev.root101.commons.rest.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;

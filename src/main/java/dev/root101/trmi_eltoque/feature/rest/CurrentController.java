@@ -1,7 +1,7 @@
 package dev.root101.trmi_eltoque.feature.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.root101.clean.core.rest.ApiResponse;
+import dev.root101.commons.rest.ApiResponse;
 import dev.root101.trmi_eltoque.feature.el_toque.ElToqueDomain;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
